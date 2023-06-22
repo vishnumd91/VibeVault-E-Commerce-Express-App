@@ -1,0 +1,35 @@
+{
+  "name": "vibevault-e-commerce-express-app",
+  "version": "1.0.0",
+  "description": "VibeVault is a feature-rich and scalable E-Commerce application built using Express.js, MongoDB, and other modern web technologies. It provides a robust platform for managing and selling various products online, offering a seamless shopping experience for customers.",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vishnumd91/VibeVault-E-Commerce-Express-App.git"
+  },
+  "keywords": [
+    "E-Commerce"
+  ],
+  "author": "Vibe Vault Team",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vishnumd91/VibeVault-E-Commerce-Express-App/issues"
+  },
+  "homepage": "https://github.com/vishnumd91/VibeVault-E-Commerce-Express-App#readme",
+  "dependencies": {
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.0",
+    "mongoose": "^7.3.1"
+  },
+  "devDependencies": {
+    "morgan": "^1.10.0"
+  }
+}
