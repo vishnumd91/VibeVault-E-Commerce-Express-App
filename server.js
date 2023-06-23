@@ -3,7 +3,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import { connectDB } from "./config/db.js";
-
+import userRouter from './routes/registrationRoute.js';
 dotenv.config();
 
 const PORT = process.env.PORT || 5001;
@@ -21,7 +21,8 @@ app.use(
 );
 app.options("*", cors());
 
-app.use("/", (req, res) => res.send("Vibe Vault Express App Root"));
+// app.use("/", (req, res) => res.send("Vibe Vault Express App Root"));
+app.use('/', userRouter)
 
 app.listen(PORT, () => console.log(`Server Connected on port ${PORT}`));
 
