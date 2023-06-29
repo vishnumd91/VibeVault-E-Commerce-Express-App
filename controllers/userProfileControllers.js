@@ -1,6 +1,7 @@
-import asyncHandler from "express-async-handler";
+import asyncHandler from "express-async-handler"; // need to remove
 import userProfile from "../models/userProfileSchema.js";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 export const getAllUsers = asyncHandler(async (req, res) => {
   const users = await userProfile.find();
@@ -13,15 +14,7 @@ export const createUser = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error("All fields are mandatory !");
   }
-  // Check if the email already exists in the database
-  // const existingUser = await userProfile.findOne({ email: email });
-
-  // if (existingUser) {
-  //   // If the user already exists, return an error
-  //   return res
-  //     .status(409)
-  //     .json({ message: "User with this email already exists" });
-  // }
+  // hashing the password
   const hashedPassword = await bcrypt.hash(password, 10);
   // Create a new instance of the User model
   await userProfile.create({
@@ -32,11 +25,11 @@ export const createUser = asyncHandler(async (req, res) => {
     address,
   });
   // Save the user to the database
-
   res.status(201).json("Registered successfully");
 });
 
 export const getUser = asyncHandler(async (req, res) => {
+  console.log(req.user);
   const user = await userProfile.findById(req.params.id);
   if (!user) {
     res.status(404);
@@ -61,10 +54,42 @@ export const deleteUser = asyncHandler(async (req, res) => {
     res.status(404);
     throw new Error("User not found");
   }
-
   await userProfile.findByIdAndDelete(req.params.id);
   res.status(200).json("User deleted successfully");
 });
 
+export const loginUser = async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
+    if (!email || !password) {
+      res.status(400);
+      throw new Error("All the fields are mandatory!");
+    }
 
-//loginuser
+    const user = await userProfile.findOne({ email });
+    if (!user) {
+      res.status(401);
+      throw new Error("User not Found. Please Register to Login");
+    }
+    //compare the hashed password
+    const isPasswordMatching = await bcrypt.compare(password, user.password);
+    if (isPasswordMatching) {
+      const accessToken = jwt.sign(
+        {
+          user: {
+            userName: user.name,
+            email: user.email,
+          },
+        },
+        process.env.ACCESS_TOKEN_SECRET,
+        { expiresIn: "15m" }
+      );
+      res.status(200).json({ accessToken });
+    } else {
+      res.status(401);
+      throw new Error("email or password is not valid");
+    }
+  } catch (err) {
+    next(err);
+  }
+};

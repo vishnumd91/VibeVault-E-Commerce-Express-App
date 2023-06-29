@@ -4,12 +4,15 @@ import {
   deleteUser,
   getAllUsers,
   getUser,
+  loginUser,
 } from "../controllers/userProfileControllers.js";
-const router = express.Router();
+import { validateToken } from "../middleware/validateTokenHandler.js";
 
-router.get("/", getAllUsers);
+const router = express.Router();
+router.get("/", validateToken, getAllUsers);
 router.post("/signup", createUser);
-router.get("/:id", getUser);
+router.post("/login", loginUser);
+router.get("/:id", validateToken, getUser);
 router.delete("/:id", deleteUser);
 
 export default router;
