@@ -4,7 +4,7 @@ import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import { connectDb } from "./config/dbConnection.js";
 import userRouter from "./routes/userProfileRoutes.js";
-import {errorHandler} from "./middleware/errorHandler.js";
+import { errorHandler } from "./middleware/errorHandler.js";
 
 dotenv.config();
 connectDb();
