@@ -1,6 +1,5 @@
 import { useState } from "react";
-import appConfig from "../../appConfig";
-import axios from "axios";
+import { axiosInstance } from "../api/apiConfig";
 
 const LoginForm = () => {
   const [formData, setFormData] = useState({
@@ -12,20 +11,14 @@ const LoginForm = () => {
     setFormData({ ...formData, [event.target.name]: event.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Make a POST request
-    axios
-      .post(`${appConfig.REACT_APP_BASE_URL}/login`, formData)
-      .then((response) => {
-        // Handle successful response
-        console.log(response.data);
-      })
-      .catch((error) => {
-        // Handle error
-        console.error(error);
-      });
+    await axiosInstance.post("/login", formData).catch((error) => {
+      // Handle error
+      console.error(error);
+    });
   };
 
   return (

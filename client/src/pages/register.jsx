@@ -1,7 +1,5 @@
-import axios from "axios";
 import { useState } from "react";
-import appConfig from "../../appConfig";
-import qs from "querystring";
+import { axiosInstance } from "../api/apiConfig";
 
 const RegistrationForm = () => {
   const [formData, setFormData] = useState({
@@ -16,32 +14,11 @@ const RegistrationForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(JSON.stringify(formData), formData);
-
     try {
-      await axios({
-        method: "POST",
-        url: `${appConfig.REACT_APP_BASE_URL}/signup`,
-        data: JSON.stringify(formData),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      await axiosInstance.post("/signup", formData);
     } catch (error) {
       console.error(error);
     }
-
-    // Make a POST request
-    // axios
-    //   .post(`${appConfig.REACT_APP_BASE_URL}/signup`, JSON.stringify(formData))
-    //   .then((response) => {
-    //     // Handle successful response
-    //     console.log(response.data);
-    //   })
-    //   .catch((error) => {
-    //     // Handle error
-    //     console.error(error);
-    //   });
   };
 
   return (
